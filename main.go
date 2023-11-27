@@ -1,9 +1,7 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 func main() {
-	fmt.Println(utils.parseSource())
+	fmt.Println("Hello, AoC2023!")
 }
