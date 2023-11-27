@@ -1,9 +1,9 @@
 package day01
 
-func PartOne() int {
+func PartOne(input []string) int {
 	return 0
 }
 
-func PartTwo() int {
+func PartTwo(input []string) int {
 	return 1
 }

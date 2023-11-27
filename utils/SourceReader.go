@@ -2,17 +2,18 @@ package utils
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"path/filepath"
 )
 
-var root = "resources"
+var resources = "/home/kptlr/Projects/aoc2023/resources"
 
-func ReadLines(env string, dayNumber string) ([]string, error) {
-	filepath := filepath.Join(root, env, dayNumber+".txt")
+func ReadLines(env string, day string) []string {
+	filepath := filepath.Join(resources, env, day + ".txt")
 	file, err := os.Open(filepath)
 	if err != nil {
-		return nil, err
+		fmt.Println("Ошибка чтения файла: " + err.Error())
 	}
 	defer file.Close()
 
@@ -21,5 +22,5 @@ func ReadLines(env string, dayNumber string) ([]string, error) {
 	for scanner.Scan() {
 		lines = append(lines, scanner.Text())
 	}
-	return lines, scanner.Err()
+	return lines
 }

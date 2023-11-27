@@ -7,15 +7,13 @@ import (
 	"github.com/kptlr/aoc2023/utils"
 )
 
+var env = "prod"
+
 func main() {
-	// Day 01
-	fmt.Println(day01.PartOne())
-	fmt.Println(day01.PartTwo())
-
-	lines, _ := utils.ReadLines("test", "day01")
-	lines2, _ := utils.ReadLines("prod", "day01")
-
-	fmt.Println(lines)
-	fmt.Println(lines2)
-
+	// Day 1
+	fmt.Print("Day 01, Part01: ")
+	fmt.Println(day01.PartOne(utils.ReadLines(env, "day01")))
+	fmt.Print("Day 01, Part02: ")
+	fmt.Println(day01.PartTwo(utils.ReadLines(env, "day01")))
+	//...
 }
