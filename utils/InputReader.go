@@ -5,12 +5,11 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"github.com/kptlr/aoc2023/config"
 )
 
-var resources = "/home/kptlr/Projects/aoc2023/resources"
-
 func ReadLines(env string, day string) []string {
-	filepath := filepath.Join(resources, env, day + ".txt")
+	filepath := filepath.Join(config.Resources, env, day + ".txt")
 	file, err := os.Open(filepath)
 	if err != nil {
 		fmt.Println("Ошибка чтения файла: " + err.Error())
