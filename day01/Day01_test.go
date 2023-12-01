@@ -10,7 +10,7 @@ var input = utils.ReadLines("test", "day01")
 
 func TestPartOne(t *testing.T) {
 	result := PartOne(input)
-	if result != 0 {
+	if result != 142 {
 		t.Fail()
 	}
 }
