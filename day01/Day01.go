@@ -5,6 +5,8 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+
+	"github.com/kptlr/aoc2023/utils"
 )
 
 var DigitsRegexp = regexp.MustCompile("[0-9]+")
@@ -71,16 +73,8 @@ func findDigitsBySubstring(substring string, input string, result []Digit) []Dig
 	index := strings.Index(input, substring)
 	if index > -1 {
 		result = append(result, Digit{index, DigitsTemplate[substring]})
-		return findDigitsBySubstring(substring, strings.Replace(input, substring, generatePlug(len(substring)), 1), result)
+		return findDigitsBySubstring(substring, strings.Replace(input, substring, utils.GeneratePlug(len(substring), "X"), 1), result)
 	} else {
 		return result
 	}
-}
-
-// Что бы не терять индекс
-func generatePlug(len int) (result string) {
-	for i := 0; i < len; i++ {
-		result += "X"
-	}
-	return
 }
