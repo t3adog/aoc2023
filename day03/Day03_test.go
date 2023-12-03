@@ -16,7 +16,7 @@ func TestPartOne(t *testing.T) {
 func TestPartTwo(t *testing.T) {
 	input := utils.ReadLines("test", "day03")
 	result := PartTwo(input)
-	assert.Equal(t, 1, result)
+	assert.Equal(t, 467835, result)
 }
 
 func TestParseSquare(t *testing.T) {

@@ -9,6 +9,7 @@ import (
 )
 
 var DigitsRegexp = regexp.MustCompile("\\.?[0-9]+\\.?")
+var GearRegexp = regexp.MustCompile("\\*")
 
 type Point struct {
 	y int
@@ -35,6 +36,12 @@ func PartOne(input []string) (result int) {
 	return
 }
 
+func PartTwo(input []string) (result int) {
+	return 1
+}
+
+// НЕ 75456631 НЕ 71798398 - to low 641600 747210 2094883 641600 39787176
+
 func isDetail(input []string, digit string, index int) bool {
 	searchSquare := parseSquare(input, digit, index)
 
@@ -51,6 +58,8 @@ func parseSquare(input []string, digit string, index int) (result Square) {
 	maxY := len(input) - 1
 
 	digitIndex := strings.Index(input[index], digit)
+	//fmt.Println(digit)
+	//fmt.Println(string(input[index][digitIndex : digitIndex+len(digit)]))
 
 	// Ищем FROM
 	if strings.HasPrefix(digit, ".") {
@@ -71,10 +80,10 @@ func parseSquare(input []string, digit string, index int) (result Square) {
 
 	// Ищем TO
 	if strings.HasSuffix(digit, ".") {
-		result.to.x = digitIndex + (len(digit) - 1)
+		result.to.x = digitIndex + len(digit) - 1
 	} else {
-		if digitIndex+(len(digit)-1)+1 <= maxX {
-			result.to.x = digitIndex + (len(digit) - 1) + 1
+		if digitIndex+len(digit)+1 <= maxX {
+			result.to.x = digitIndex + len(digit) + 1
 		} else {
 			result.to.x = maxX
 		}
@@ -86,8 +95,4 @@ func parseSquare(input []string, digit string, index int) (result Square) {
 		result.to.y = maxY
 	}
 	return
-}
-
-func PartTwo(input []string) (result int) {
-	return 1
 }
