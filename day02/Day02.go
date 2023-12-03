@@ -57,6 +57,30 @@ func PartOne(input []string) (result int) {
 	return result
 }
 
+func PartTwo(input []string) (result int) {
+	games := make([]Game, 0)
+	for _, v := range input {
+		games = append(games, parseGame(v))
+	}
+	for _, game := range games {
+		red := 0
+		green := 0
+		blue := 0
+		for _, colorSet := range game.sets {
+			if colorSet.colors[Red] > red {
+				red = colorSet.colors[Red]
+			}
+			if colorSet.colors[Green] > green {
+				green = colorSet.colors[Green]
+			}
+			if colorSet.colors[Blue] > blue {
+				blue = colorSet.colors[Blue]
+			}
+		}
+		result += red * green * blue
+	}
+	return
+}
 func parseGame(input string) Game {
 	gameId, _ := strconv.Atoi(strings.Split(strings.Split(input, ":")[0], " ")[1])
 	colorSets := make([]ColorSets, 0)
@@ -71,8 +95,4 @@ func parseGame(input string) Game {
 		}
 	}
 	return Game{gameId, colorSets}
-}
-
-func PartTwo(input []string) (result int) {
-	return 1
 }
