@@ -7,8 +7,8 @@ import (
 
 type Card struct {
 	id             int
-	winningNumbers map[int]int
-	numbers        map[int]int
+	winningNumbers map[int]int // whorst practies
+	numbers        map[int]int // whorst practies
 	scores         int
 }
 
@@ -38,44 +38,39 @@ func PartOne(input []string) (result int) {
 }
 
 func PartTwo(input []string) (result int) {
-	cards := make([]Card, 1)
-	for _, line := range input {
-		cards = append(cards, parseCard(line))
+	cards := make([]Card, len(input))
+	for idx, line := range input {
+		cards[idx] = parseCard(line)
 	}
 
-	_, total_score := calculateScore(cards)
-	result = total_score
+	result = calculateScore(cards)
 	return
 }
 
-// Не 2391905
+func calculateScore(cards []Card) (result int) {
+	numOfCards := make([]int, len(cards))
 
-func calculateScore(cards []Card) ([]int, int) {
-	number_of_cards := make([]int, len(cards))
-
-	for i := range number_of_cards {
-		number_of_cards[i] = 1
+	for i := range numOfCards {
+		numOfCards[i] = 1
 	}
 
-	for i, v := range cards {
-		me_copies := number_of_cards[i]
+	for i, card := range cards {
+		copies := numOfCards[i]
 
-		if v.scores == 0 {
+		if card.scores == 0 {
 			continue
 		}
 
-		for x := 1; x <= v.scores; x++ {
-			number_of_cards[i+x] += me_copies
+		for x := 1; x <= card.scores; x++ {
+			numOfCards[i+x] += copies
 		}
 	}
 
-	total_score := 0
-
-	for _, v := range number_of_cards {
-		total_score += v
+	for _, numOfCard := range numOfCards {
+		result += numOfCard
 	}
 
-	return number_of_cards, total_score
+	return
 }
 
 func parseCard(input string) (card Card) {
