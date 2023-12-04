@@ -1,15 +1,19 @@
 package day04
 
 import (
+	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 )
 
+var DigitsRegexp = regexp.MustCompile("[0-9]+")
+
 type Card struct {
-	id             int
-	winningNumbers map[int]int // whorst practies
-	numbers        map[int]int // whorst practies
-	scores         int
+	id         int
+	winNumbers []int
+	numbers    []int
+	scores     int
 }
 
 func PartOne(input []string) (result int) {
@@ -22,8 +26,8 @@ func PartOne(input []string) (result int) {
 
 	for _, card := range cards {
 		points := 0
-		for _, winningNumber := range card.winningNumbers {
-			if card.numbers[winningNumber] == winningNumber {
+		for _, number := range card.numbers {
+			if slices.Contains(card.winNumbers, number) {
 				if points == 0 {
 					points = 1
 				} else {
@@ -61,8 +65,8 @@ func calculateScore(cards []Card) (result int) {
 			continue
 		}
 
-		for x := 1; x <= card.scores; x++ {
-			numOfCards[i+x] += copies
+		for score := 1; score <= card.scores; score++ {
+			numOfCards[i+score] += copies
 		}
 	}
 
@@ -77,7 +81,7 @@ func parseCard(input string) (card Card) {
 	cardId, _ := strconv.Atoi(strings.Split(strings.Split(input, ":")[0], " ")[1])
 	card.id = cardId
 	cards := strings.Split(strings.Split(input, ":")[1], "|")
-	card.winningNumbers = parseNumbers(strings.Trim(cards[0], " "))
+	card.winNumbers = parseNumbers(strings.Trim(cards[0], " "))
 	card.numbers = parseNumbers(strings.Trim(cards[1], " "))
 	card.scores = calcScores(card)
 
@@ -87,20 +91,18 @@ func parseCard(input string) (card Card) {
 func calcScores(card Card) int {
 	points := 0
 	for _, num := range card.numbers {
-		if card.winningNumbers[num] == num {
+		if slices.Contains(card.winNumbers, num) {
 			points++
 		}
 	}
 	return points
 }
 
-func parseNumbers(input string) (numbers map[int]int) {
-	numbers = make(map[int]int)
-	for _, num := range strings.Split(input, " ") {
-		number, err := strconv.Atoi(string(num))
-		if err == nil {
-			numbers[number] = number
-		}
+func parseNumbers(input string) (numbers []int) {
+	strNums := DigitsRegexp.FindAllString(input, -1)
+	for _, numStr := range strNums {
+		number, _ := strconv.Atoi(numStr)
+		numbers = append(numbers, number)
 	}
 	return
 }
