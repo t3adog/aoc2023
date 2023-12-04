@@ -37,10 +37,29 @@ func PartOne(input []string) (result int) {
 }
 
 func PartTwo(input []string) (result int) {
-	return 1
-}
 
-// НЕ 75456631 НЕ 71798398 - to low 641600 747210 2094883 641600 39787176
+	gearDigitsMap := make(map[Point][]int)
+
+	for index, line := range input {
+		digits := DigitsRegexp.FindAllString(line, -1)
+		for _, digit := range digits {
+			isNearGeart, point := isNearGear(input, digit, index)
+			input[index] = strings.Replace(input[index], digit, utils.GeneratePlug(len(digit), "."), 1)
+			if isNearGeart {
+				digit, _ := strconv.Atoi(strings.ReplaceAll(digit, ".", ""))
+				digitNumbers := gearDigitsMap[point]
+				digitNumbers = append(digitNumbers, digit)
+				gearDigitsMap[point] = digitNumbers
+			}
+		}
+	}
+	for _, arr := range gearDigitsMap {
+		if len(arr) == 2 {
+			result += (arr[0] * arr[1])
+		}
+	}
+	return
+}
 
 func isDetail(input []string, digit string, index int) bool {
 	searchSquare := parseSquare(input, digit, index)
@@ -53,13 +72,24 @@ func isDetail(input []string, digit string, index int) bool {
 	return false
 }
 
+func isNearGear(input []string, digit string, index int) (result bool, point Point) {
+	searchSquare := parseSquare(input, digit, index)
+	for y := searchSquare.from.y; y <= searchSquare.to.y; y++ {
+		for x := searchSquare.from.x; x <= searchSquare.to.x; x++ {
+			if string(input[y][x]) == "*" {
+				result = true
+				point = Point{y: y, x: x}
+			}
+		}
+	}
+	return
+}
+
 func parseSquare(input []string, digit string, index int) (result Square) {
 	maxX := len(input[index]) - 1
 	maxY := len(input) - 1
 
 	digitIndex := strings.Index(input[index], digit)
-	//fmt.Println(digit)
-	//fmt.Println(string(input[index][digitIndex : digitIndex+len(digit)]))
 
 	// Ищем FROM
 	if strings.HasPrefix(digit, ".") {
