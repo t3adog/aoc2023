@@ -1,7 +1,6 @@
 package day04
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 )
@@ -10,6 +9,7 @@ type Card struct {
 	id             int
 	winningNumbers map[int]int
 	numbers        map[int]int
+	scores         int
 }
 
 func PartOne(input []string) (result int) {
@@ -38,41 +38,44 @@ func PartOne(input []string) (result int) {
 }
 
 func PartTwo(input []string) (result int) {
-	cards := make(map[int]Card)
-	queue := make([]Card, 0)
+	cards := make([]Card, 1)
 	for _, line := range input {
-		card := parseCard(line)
-		cards[card.id] = card
-		queue = append(queue, card)
+		cards = append(cards, parseCard(line))
 	}
 
-	fmt.Println("Size: ", len(queue))
-	processCards := process(cards, 0, queue)
-
-	fmt.Println(len(processCards))
-
-	result = len(processCards)
+	_, total_score := calculateScore(cards)
+	result = total_score
 	return
 }
 
 // Не 2391905
 
-func process(cards map[int]Card, index int, queue []Card) []Card {
-	fmt.Println("Index: ", index, "Queue: ", len(queue))
-	for x := index; x < len(queue); x++ {
-		fmt.Println(len(queue))
-		card := queue[x]
-		points := 0
-		for _, winningNumber := range card.winningNumbers {
-			if card.numbers[winningNumber] == winningNumber {
-				points++
-			}
+func calculateScore(cards []Card) ([]int, int) {
+	number_of_cards := make([]int, len(cards))
+
+	for i := range number_of_cards {
+		number_of_cards[i] = 1
+	}
+
+	for i, v := range cards {
+		me_copies := number_of_cards[i]
+
+		if v.scores == 0 {
+			continue
 		}
-		for id := 1; id <= points; id++ {
-			queue = append(queue, cards[card.id+id])
+
+		for x := 1; x <= v.scores; x++ {
+			number_of_cards[i+x] += me_copies
 		}
 	}
-	return queue
+
+	total_score := 0
+
+	for _, v := range number_of_cards {
+		total_score += v
+	}
+
+	return number_of_cards, total_score
 }
 
 func parseCard(input string) (card Card) {
@@ -81,8 +84,19 @@ func parseCard(input string) (card Card) {
 	cards := strings.Split(strings.Split(input, ":")[1], "|")
 	card.winningNumbers = parseNumbers(strings.Trim(cards[0], " "))
 	card.numbers = parseNumbers(strings.Trim(cards[1], " "))
+	card.scores = calcScores(card)
 
 	return
+}
+
+func calcScores(card Card) int {
+	points := 0
+	for _, num := range card.numbers {
+		if card.winningNumbers[num] == num {
+			points++
+		}
+	}
+	return points
 }
 
 func parseNumbers(input string) (numbers map[int]int) {
