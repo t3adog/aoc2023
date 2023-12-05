@@ -1,4 +1,4 @@
-package day05
+package day06
 
 import (
 	"testing"
@@ -8,13 +8,13 @@ import (
 )
 
 func TestPartOne(t *testing.T) {
-	input := utils.ReadLines("test", "day05")
+	input := utils.ReadLines("test", "day06")
 	result := PartOne(input)
-	assert.Equal(t, 35, result)
+	assert.Equal(t, 0, result)
 }
 
 func TestPartTwo(t *testing.T) {
-	input := utils.ReadLines("test", "day05")
+	input := utils.ReadLines("test", "day06")
 	result := PartTwo(input)
-	assert.Equal(t, 46, result)
+	assert.Equal(t, 1, result)
 }
