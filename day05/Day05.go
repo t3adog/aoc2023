@@ -131,7 +131,7 @@ func parseMap(input string) (result SeedMap) {
 	return result
 }
 
-func PartTwo(input []string) (result int) {
+func PartTwo(input []string) (result int) { // work slow, but work
 	seeds := parseAnotherSeeds(input[0])
 	seedToSoil := make([]SeedMap, 0)
 	soilToFertilizer := make([]SeedMap, 0)
