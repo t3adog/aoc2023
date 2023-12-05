@@ -34,7 +34,7 @@ func main() {
 
 	// Day05
 	fmt.Println("Day 05, Part01: ", day05.PartOne(utils.ReadLines(env, "day05")))
-	fmt.Println("Day 05, Part02: ", day05.PartTwo(utils.ReadLines(env, "day05")))
+	//fmt.Println("Day 05, Part02: ", day05.PartTwo(utils.ReadLines(env, "day05")))
 
 	// Day06
 	fmt.Println("Day 06, Part01: ", day06.PartOne(utils.ReadLines(env, "day06")))
