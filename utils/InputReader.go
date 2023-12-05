@@ -5,9 +5,12 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 
 	"github.com/kptlr/aoc2023/config"
 )
+
+var DigitsRegexp = regexp.MustCompile("[0-9]+")
 
 func ReadLines(env string, day string) []string {
 	filepath := filepath.Join(config.Resources, env, day+".txt")

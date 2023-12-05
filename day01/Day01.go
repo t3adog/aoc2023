@@ -1,15 +1,12 @@
 package day01
 
 import (
-	"regexp"
 	"sort"
 	"strconv"
 	"strings"
 
 	"github.com/kptlr/aoc2023/utils"
 )
-
-var DigitsRegexp = regexp.MustCompile("[0-9]+")
 
 var DigitsTemplate = map[string]string{
 	"one":   "1",
@@ -39,7 +36,7 @@ type Digit struct {
 
 func PartOne(input []string) (result int) {
 	for _, value := range input {
-		strDigits := []rune(strings.Join(DigitsRegexp.FindAllString(value, -1), ""))
+		strDigits := []rune(strings.Join(utils.DigitsRegexp.FindAllString(value, -1), ""))
 		calibrationValue, _ := strconv.Atoi(string(strDigits[0]) + string(strDigits[len(strDigits)-1]))
 		result += calibrationValue
 	}

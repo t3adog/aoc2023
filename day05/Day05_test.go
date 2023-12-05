@@ -10,7 +10,7 @@ import (
 func TestPartOne(t *testing.T) {
 	input := utils.ReadLines("test", "day05")
 	result := PartOne(input)
-	assert.Equal(t, 0, result)
+	assert.Equal(t, 35, result)
 }
 
 func TestPartTwo(t *testing.T) {
