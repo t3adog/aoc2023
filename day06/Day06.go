@@ -2,6 +2,7 @@ package day06
 
 import (
 	"strconv"
+	"strings"
 
 	"github.com/kptlr/aoc2023/utils"
 )
@@ -12,7 +13,7 @@ type Race struct {
 }
 
 func PartOne(input []string) (result int) {
-	races := parseRaces(input)
+	races := parseRacesV1(input)
 	winOptions := make([][]int, 0)
 
 	for _, v := range races {
@@ -28,12 +29,38 @@ func PartOne(input []string) (result int) {
 }
 
 func PartTwo(input []string) (result int) {
-	return 1
+	races := parseRacesV2(input)
+	winOptions := make([][]int, 0)
+
+	for _, v := range races {
+		winOptions = append(winOptions, findWinOptions(v))
+	}
+
+	result = 1
+
+	for _, v := range winOptions {
+		result = result * len(v)
+	}
+	return result
 }
 
-func parseRaces(input []string) (races []Race) {
+func parseRacesV1(input []string) (races []Race) {
 	timesStr := utils.DigitsRegexp.FindAllString(input[0], -1)
 	distsStr := utils.DigitsRegexp.FindAllString(input[1], -1)
+
+	for i, _ := range timesStr {
+		time, _ := strconv.Atoi(timesStr[i])
+		dist, _ := strconv.Atoi(distsStr[i])
+		races = append(races, Race{time, dist})
+	}
+
+	return
+}
+
+func parseRacesV2(input []string) (races []Race) {
+
+	timesStr := utils.DigitsRegexp.FindAllString(strings.ReplaceAll(input[0], " ", ""), -1)
+	distsStr := utils.DigitsRegexp.FindAllString(strings.ReplaceAll(input[1], " ", ""), -1)
 
 	for i, _ := range timesStr {
 		time, _ := strconv.Atoi(timesStr[i])

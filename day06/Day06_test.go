@@ -16,5 +16,5 @@ func TestPartOne(t *testing.T) {
 func TestPartTwo(t *testing.T) {
 	input := utils.ReadLines("test", "day06")
 	result := PartTwo(input)
-	assert.Equal(t, 1, result)
+	assert.Equal(t, 71503, result)
 }
