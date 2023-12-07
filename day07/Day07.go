@@ -18,6 +18,7 @@ var combinationStrength = map[string]int{
 }
 
 var cardStrength = map[string]int{
+	"j": 0,
 	"2": 1,
 	"3": 2,
 	"4": 3,
@@ -50,7 +51,13 @@ func PartOne(input []string) (result int) {
 }
 
 func PartTwo(input []string) (result int) {
-	return 1
+	hands := parseHandsWithJoker(input)
+
+	sort.Slice(hands, func(i, j int) bool {
+		return firstHandLessSecondHand(hands[i], hands[j])
+	})
+
+	return calcTotalWinnigs(hands)
 }
 
 func parseCombination(input string) string {
@@ -97,11 +104,36 @@ func parseCombination(input string) string {
 	return "highCard"
 }
 
+func parseCombinationWithJoker(input string) string {
+
+	maxCombination := parseCombination(input)
+	for _, v := range input {
+		if string(v) == "j" {
+			continue
+		}
+		newCombination := parseCombination(strings.ReplaceAll(input, "j", string(v)))
+		if combinationStrength[maxCombination] < combinationStrength[newCombination] {
+			maxCombination = newCombination
+		}
+	}
+	return maxCombination
+}
+
 func parseHands(input []string) (hands []Hand) {
 	for _, v := range input {
 		hand := strings.Split(v, " ")[0]
 		amount, _ := strconv.Atoi(strings.Split(v, " ")[1])
 		hands = append(hands, Hand{labels: hand, amount: amount, combination: parseCombination(hand)})
+	}
+	return
+}
+
+func parseHandsWithJoker(input []string) (hands []Hand) {
+	for _, v := range input {
+		v = strings.ReplaceAll(v, "J", "j")
+		hand := strings.Split(v, " ")[0]
+		amount, _ := strconv.Atoi(strings.Split(v, " ")[1])
+		hands = append(hands, Hand{labels: hand, amount: amount, combination: parseCombinationWithJoker(hand)})
 	}
 	return
 }
