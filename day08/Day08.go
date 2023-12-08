@@ -16,11 +16,9 @@ func PartOne(input []string) (result int) {
 
 	currentKey := "AAA"
 	currentNode := nodes[currentKey]
-	//fmt.Println("currentKey: ", currentKey, "currentNode:", currentNode)
 	i := 0
 	for i < len(instructions) {
 		result++
-		//fmt.Println("instructuion is: ", string(instructions[i]))
 		if string(instructions[i]) == "L" {
 			currentKey = currentNode.Left
 		} else {
@@ -50,43 +48,57 @@ func PartTwo(input []string) (result int) {
 			currentKeys = append(currentKeys, key)
 		}
 	}
-
-	fmt.Println(currentKeys)
-	i := 0
-	for i < len(instructions) {
-		result++
-		for keyIndex, currentKey := range currentKeys {
-			currentNode := nodes[currentKey]
+	loops := make([]int, 0)
+	for _, k := range currentKeys {
+		currentKey := k
+		currentNode := nodes[currentKey]
+		i := 0
+		count := 0
+		for i < len(instructions) {
+			count++
 			if string(instructions[i]) == "L" {
 				currentKey = currentNode.Left
-				currentKeys[keyIndex] = currentKey
 			} else {
 				currentKey = currentNode.Right
-				currentKeys[keyIndex] = currentKey
 			}
-			//currentNode = nodes[currentKey]
-		}
-		if isAllKeysFinished(currentKeys) {
-			return result
-		}
-		if i == len(instructions)-1 {
-			i = 0
-		} else {
-			i++
+			if strings.HasSuffix(currentKey, "Z") {
+				loops = append(loops, count)
+				break
+			}
+
+			currentNode = nodes[currentKey]
+			if i == len(instructions)-1 {
+				i = 0
+			} else {
+				i++
+			}
 		}
 	}
-	return
+
+	fmt.Println()
+
+	return lcm(loops)
 }
 
-func isAllKeysFinished(keys []string) bool {
-	//fmt.Println("Current keys: ", keys)
-	for _, v := range keys {
-		if !strings.HasSuffix(v, "Z") {
-			return false
-		}
+// https://ru.wikipedia.org/wiki/Наименьшее_общее_кратное
+func lcm(nums []int) int {
+	result := nums[0] * nums[1] / gcd(nums[0], nums[1])
+
+	for i := 2; i < len(nums); i++ {
+		result = lcm([]int{result, nums[i]})
 	}
-	fmt.Println("OH LOL TRUE", keys)
-	return true
+
+	return result
+}
+
+// https://en.wikipedia.org/wiki/Greatest_common_divisor
+func gcd(a, b int) int {
+	for b != 0 {
+		t := b
+		b = a % b
+		a = t
+	}
+	return a
 }
 
 func parseNodes(input []string) map[string]Node {
