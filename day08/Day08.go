@@ -1,6 +1,7 @@
 package day08
 
 import (
+	"fmt"
 	"strings"
 )
 
@@ -31,18 +32,61 @@ func PartOne(input []string) (result int) {
 
 		currentNode = nodes[currentKey]
 		if i == len(instructions)-1 {
-			//fmt.Println("ХОБА")
 			i = 0
 		} else {
 			i++
 		}
-		//fmt.Println(result)
 	}
 	return
 }
 
 func PartTwo(input []string) (result int) {
-	return 1
+	instructions := []rune(input[0])
+	nodes := parseNodes(input[2:])
+	currentKeys := make([]string, 0)
+
+	for key, _ := range nodes {
+		if strings.HasSuffix(key, "A") {
+			currentKeys = append(currentKeys, key)
+		}
+	}
+
+	fmt.Println(currentKeys)
+	i := 0
+	for i < len(instructions) {
+		result++
+		for keyIndex, currentKey := range currentKeys {
+			currentNode := nodes[currentKey]
+			if string(instructions[i]) == "L" {
+				currentKey = currentNode.Left
+				currentKeys[keyIndex] = currentKey
+			} else {
+				currentKey = currentNode.Right
+				currentKeys[keyIndex] = currentKey
+			}
+			//currentNode = nodes[currentKey]
+		}
+		if isAllKeysFinished(currentKeys) {
+			return result
+		}
+		if i == len(instructions)-1 {
+			i = 0
+		} else {
+			i++
+		}
+	}
+	return
+}
+
+func isAllKeysFinished(keys []string) bool {
+	//fmt.Println("Current keys: ", keys)
+	for _, v := range keys {
+		if !strings.HasSuffix(v, "Z") {
+			return false
+		}
+	}
+	fmt.Println("OH LOL TRUE", keys)
+	return true
 }
 
 func parseNodes(input []string) map[string]Node {
