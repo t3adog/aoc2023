@@ -11,6 +11,7 @@ import (
 	"github.com/kptlr/aoc2023/day06"
 	"github.com/kptlr/aoc2023/day07"
 	"github.com/kptlr/aoc2023/day08"
+	"github.com/kptlr/aoc2023/day09"
 	"github.com/kptlr/aoc2023/utils"
 )
 
@@ -49,6 +50,10 @@ func main() {
 	// Day08
 	fmt.Println("Day 08, Part01: ", day08.PartOne(utils.ReadLines(env, "day08")))
 	fmt.Println("Day 08, Part02: ", day08.PartTwo(utils.ReadLines(env, "day08")))
+
+	// Day09
+	fmt.Println("Day 09, Part01: ", day09.PartOne(utils.ReadLines(env, "day09")))
+	fmt.Println("Day 09, Part02: ", day09.PartTwo(utils.ReadLines(env, "day09")))
 
 	// ...
 
