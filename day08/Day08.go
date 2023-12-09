@@ -1,7 +1,6 @@
 package day08
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -74,9 +73,6 @@ func PartTwo(input []string) (result int) {
 			}
 		}
 	}
-
-	fmt.Println()
-
 	return lcm(loops)
 }
 
