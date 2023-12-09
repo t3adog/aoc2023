@@ -19,7 +19,7 @@ func PartTwo(input []string) (result int) {
 
 	for _, v := range input {
 		numbers := parseNumbes(v)
-		result += extrapolationsBackwardsSum(numbers)
+		result += backwardExtrapolationsSum(numbers)
 	}
 	return
 }
@@ -42,12 +42,12 @@ func extrapolationsSum(numbers []int) int {
 	return numbers[len(numbers)-1] + extrapolationsSum(numbers[:len(numbers)-1])
 }
 
-func extrapolationsBackwardsSum(numbers []int) int {
+func backwardExtrapolationsSum(numbers []int) int {
 	if len(numbers) <= 1 {
 		return 0
 	}
 	for i := len(numbers) - 1; i > 0; i-- {
 		numbers[i] = numbers[i] - numbers[i-1]
 	}
-	return numbers[0] - extrapolationsBackwardsSum(numbers[1:])
+	return numbers[0] - backwardExtrapolationsSum(numbers[1:])
 }
