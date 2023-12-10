@@ -7,14 +7,20 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestPartOne(t *testing.T) {
-	input := utils.ReadLines("test", "day10")
+func TestPartOne_01(t *testing.T) {
+	input := utils.ReadLines("test", "day10_part01_01")
 	result := PartOne(input)
-	assert.Equal(t, 0, result)
+	assert.Equal(t, 4, result)
+}
+
+func TestPartOne_02(t *testing.T) {
+	input := utils.ReadLines("test", "day10_part01_02")
+	result := PartOne(input)
+	assert.Equal(t, 8, result)
 }
 
 func TestPartTwo(t *testing.T) {
-	input := utils.ReadLines("test", "day10")
+	input := utils.ReadLines("test", "day10_part01_01")
 	result := PartTwo(input)
 	assert.Equal(t, 1, result)
 }
