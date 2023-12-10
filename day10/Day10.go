@@ -15,8 +15,113 @@ func PartOne(input []string) (result int) {
 	return len(loop) / 2
 }
 
-func PartTwo(input []string) (result int) {
-	return 1
+func PartTwo(input []string) (result int) { // it is don't work
+	inp := make([][]string, 0)
+	for _, v := range input {
+		line := []rune(v)
+		lineArr := make([]string, 0)
+		for _, r := range line {
+			lineArr = append(lineArr, string(r))
+		}
+		inp = append(inp, lineArr)
+	}
+
+	start := findStart(input)
+	loop := findLoop(start, input)
+
+	for _, point := range loop {
+		inp[point.y][point.x] = "*"
+	}
+
+	for y, line := range inp {
+		for x, char := range line {
+			if char == "." && isCharInPoint(inp, Point{y, x, char}) {
+				result++
+			}
+		}
+	}
+
+	return result
+}
+
+func isCharInPoint(input [][]string, point Point) bool {
+
+	// Идем влево пока не упремся в *
+	result := false
+	for x := point.x; x > 0; x-- {
+		if input[point.y][x] != "*" && input[point.y][x] != "." {
+			return false
+		}
+		if input[point.y][x] == "*" {
+			result = true
+			break
+		}
+		if input[point.y][x] == "." {
+			return isCharInPoint(input, Point{y: point.y, x: x})
+		}
+	}
+
+	if !result {
+		return false
+	}
+
+	result = false
+
+	// Идем вправо пока не упремся в *
+	for x := point.x; x < len(input[point.y]); x++ {
+		if input[point.y][x] != "*" && input[point.y][x] != "." {
+			return false
+		}
+		if input[point.y][x] == "*" {
+			result = true
+			break
+		}
+		if input[point.y][x] == "." {
+			return isCharInPoint(input, Point{y: point.y, x: x})
+		}
+	}
+
+	if !result {
+		return false
+	}
+
+	result = false
+
+	// Идем вверх пока не упремся
+	for y := point.y; y > 0; y-- {
+		if input[y][point.x] != "*" && input[y][point.x] != "." {
+			return false
+		}
+		if input[y][point.x] == "*" {
+			result = true
+			break
+		}
+		if input[y][point.x] == "." {
+			return isCharInPoint(input, Point{y: y, x: point.x})
+		}
+
+	}
+
+	if !result {
+		return false
+	}
+
+	result = false
+
+	// Идем вниз пока не упремся
+	for y := point.y; y < len(input); y++ {
+		if input[y][point.x] != "*" && input[y][point.x] != "." {
+			return false
+		}
+		if input[y][point.x] == "*" {
+			result = true
+			break
+		}
+		if input[y][point.x] == "." {
+			return isCharInPoint(input, Point{y: y, x: point.x})
+		}
+	}
+	return result
 }
 
 func findStart(input []string) (start Point) {

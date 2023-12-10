@@ -20,7 +20,7 @@ func TestPartOne_02(t *testing.T) {
 }
 
 func TestPartTwo(t *testing.T) {
-	input := utils.ReadLines("test", "day10_part01_01")
+	input := utils.ReadLines("test", "day10_part02")
 	result := PartTwo(input)
-	assert.Equal(t, 1, result)
+	assert.Equal(t, 8, result)
 }
